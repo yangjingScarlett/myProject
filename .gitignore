@@ -8,5 +8,30 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
+*.iml
+.idea/
+.idea_modules/
+target/
+*.log
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+hs_err_pid*
+
+data/
+/.project
+
+# project file
+*.project
+.settings/
+.classpath
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar

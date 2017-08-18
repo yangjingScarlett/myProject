@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+            http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--配置spring会扫描的包，这个包里所有的bean都会被识别并建立-->
+    <context:component-scan base-package="com.yang.myProject"/>
+
+    <!--spring扫描包是它的基础，所以上面那行一定要有。
+    这里是为了实现定时任务，如：@Scheduled(cron = "*/5 * * * * ?")//每隔5秒执行一次-->
+    <task:annotation-driven/>
+
+    <!--配置spring配置文件的位置，以便于在java程序中直接用@Value访问属性-->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:db.properties"/>
+    </bean>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxPoolSize" value="${jdbc.max.pool.size}"/>
+        <property name="minPoolSize" value="${jdbc.min.pool.size}"/>
+        <property name="idleConnectionTestPeriod" value="${jdbc.idle.connection.test.period}"/>
+        <property name="maxIdleTime" value="${jdbc.max.idle.time}"/>
+        <property name="checkoutTimeout" value="${jdbc.checkout.timeout}"/>
+        <property name="testConnectionOnCheckout" value="true"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="persistenceUnitName" value="persistenceUnit"/>
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+        </property>
+        <property name="jpaProperties">
+            <map>
+                <entry key="hibernate.hbm2ddl.auto" value="none"/>  <!--create-drop-->
+                <entry key="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+                <entry key="hibernate.show_sql" value="${hibernate.show.sql}"/>
+                <entry key="hibernate.format_sql" value="${hibernate.format.sql}"/>
+                <entry key="hibernate.hbm2ddl.import_files_sql_extractor"
+                       value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor"/>
+                <entry key="hibernate.connection.useUnicode" value="true"/>
+                <entry key="hibernate.connection.characterEncoding" value="UTF-8"/>
+                <entry key="hibernate.connection.charSet" value="UTF-8"/>
+            </map>
+        </property>
+        <property name="packagesToScan" value="com.yang.myProject.entity.remote"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <constructor-arg ref="entityManagerFactory"/>
+    </bean>
+
+
+    <bean id="h2DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="org.h2.Driver"/>
+        <property name="jdbcUrl" value="jdbc:h2:file:E:/data/sample;DB_CLOSE_DELAY=-1;MODE=Oracle"/>
+        <property name="user" value="sa"/>
+        <property name="password" value="199527"/>
+        <property name="maxPoolSize" value="30"/>
+        <property name="minPoolSize" value="2"/>
+        <property name="idleConnectionTestPeriod" value="1000"/>
+        <property name="maxIdleTime" value="1800"/>
+        <property name="checkoutTimeout" value="10000"/>
+    </bean>
+
+
+    <bean id="h2EntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="h2DataSource"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="persistenceUnitName" value="h2PersistenceUnit"/>
+        <property name="jpaProperties">
+            <map>
+                <entry key="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+                <entry key="hibernate.hbm2ddl.auto" value="update"/>
+                <entry key="hibernate.show_sql" value="false"/>
+                <entry key="hibernate.format_sql" value="false"/>
+                <entry key="hibernate.hbm2ddl.import_files_sql_extractor"
+                       value="org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor"/>
+            </map>
+        </property>
+        <property name="packagesToScan" value="com.yang.myProject.entity.local"/>
+    </bean>
+
+    <bean id="h2TransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <constructor-arg ref="h2EntityManagerFactory"/>
+    </bean>
+
+    <bean id="h2Server" class="org.h2.tools.Server" factory-method="createTcpServer" init-method="start"
+          destroy-method="stop" depends-on="h2WebServer">
+        <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9092"/>
+    </bean>
+    <bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"
+          destroy-method="stop">
+        <constructor-arg value="-web,-webAllowOthers,-webPort,8082"/>
+    </bean>
+
+    <!--在工程启动时，去执行一些sql，也就是初始化数据库-->
+    <!--<jdbc:initialize-database data-source="h2DataSource">
+        <jdbc:script location="classpath:create-db.sql" encoding="UTF-8"/>
+    </jdbc:initialize-database>-->
+
+    <!--支持事务注解的（@Transactional）-->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="h2TransactionManager" />
+
+    <!--支持mvc注解的，就是使Controller中可以使用MVC的各种注解。-->
+    <mvc:annotation-driven/>
+
+    <!--声明自动为spring容器中那些配置@aspectJ切面的bean创建代理，织入切面-->
+    <aop:aspectj-autoproxy/>
+
+</beans>

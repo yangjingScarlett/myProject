@@ -1,0 +1,55 @@
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="false" xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <appender name="consoleAppend" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss:sss} [%5p][%t][%c{1}]-[%M] %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="ASYNC" class="org.apache.log4j.AsyncAppender">
+        <appender-ref ref="fileAppender"/>
+    </appender>
+
+    <appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="E:/programs/myselfPrograms/myProject/logs/cimsrunner.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <param name="Append" value="true"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <param name="Encoding" value="utf-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss:sss} [%5p][%t][%c{1}]-[%M] %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+            <param name="LevelMax" value="ERROR"/>
+        </filter>
+    </appender>
+
+    <appender name="errorAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="E:/programs/myselfPrograms/myProject/logs/cimsrunner.error.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <param name="encoding" value="utf-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss:sss} [%5p][%t][%c{1}]-[%M] %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="ERROR"/>
+            <param name="LevelMax" value="ERROR"/>
+        </filter>
+    </appender>
+
+    <!--<logger name="cn.wanda.cims.webservice.service.remote.cash.impl.RemoteCashServiceImpl" additivity="true">-->
+    <!--<appender-ref ref="fileAppender" />-->
+    <!--</logger>-->
+
+    <root>
+        <priority value="INFO"/>
+        <appender-ref ref="fileAppender"/>
+        <appender-ref ref="consoleAppend"/>
+        <!--<appender-ref ref="ASYNC"/>-->
+        <appender-ref ref="errorAppender"/>
+    </root>
+</log4j:configuration>

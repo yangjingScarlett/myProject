@@ -1,0 +1,38 @@
+-- 该文件记录小贷后台系统的数据查询语句
+
+-- //@SQL@{QUERY_STUDENT_DETAIL}
+-- student表的所有信息
+select * from student;
+
+-- //@SQL@{QUERY_COURSE_DETAIL}
+-- course表的所有信息
+select * from course;
+
+-- //@SQL@{QUERY_BUSINESS_DATE}
+-- 查询入学日期
+SELECT BUSINESSDATE FROM SYSTEM_SETUP;
+
+-- //@SQL@{QUERY_STUDENT_CNT}
+-- 查询指定入学日期当天的入学人数
+SELECT COUNT(STU_ID) AS StudentCntToday
+FROM STUDENT S
+WHERE ENTERDATE = to_date('%s','yyyy-mm-dd');
+
+-- //@SQL@{QUERY_STUDENT_CNT_DUE_DAY}
+-- 查询指定入学日期之前累计的入学人数
+SELECT COUNT(DISTINCT STU_ID) AS StudentCntDueDay
+FROM STUDENT S
+WHERE ENTERDATE <= to_date('%s','yyyy-mm-dd');
+
+-- //@SQL@{QUERY_EARLIEST_ENTER_DATE}
+-- 查询学生最早入学日期
+SELECT MIN(ENTERDATE) AS MIN_ENTERDATE FROM STUDENT;
+
+-- //@SQL@{QUERY_STUDENT_CNT_PER_DAY_HIST}
+-- 查询某历史入学日期当天入学人数
+-- 返回列表: 入学日期、人次（当日累计,不去重）
+SELECT ENTERDATE, COUNT(STU_ID) AS StudentCntPerDay
+FROM STUDENT
+WHERE ENTERDATE < to_date('%s','yyyy-mm-dd')
+GROUP BY ENTERDATE
+ORDER BY ENTERDATE;

@@ -4,10 +4,30 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+    <!--一定要把log4j的配置listener放在contextConfigLocation的listener之前，否则系统会找不到log4j，然后报错：
+    log4j:WARN No appenders could be found for logger (org.springframework.web.context.ContextLoader).
+    log4j:WARN Please initialize the log4j system properly.-->
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>file:E:/programs/myselfPrograms/myProject/conf/log4j-config.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>log4jRefreshInterval</param-name>
+        <param-value>3000</param-value>
+    </context-param>
+    <listener>
+        <listener-class>
+            org.springframework.web.util.Log4jConfigListener
+        </listener-class>
+    </listener>
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -22,10 +42,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -37,17 +53,4 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <context-param>
-        <param-name>log4jConfigLocation</param-name>
-        <param-value>file:E:/programs/myselfPrograms/myProject/conf/log4j-config.xml</param-value>
-    </context-param>
-    <context-param>
-        <param-name>log4jRefreshInterval</param-name>
-        <param-value>3000</param-value>
-    </context-param>
-    <listener>
-        <listener-class>
-            org.springframework.web.util.Log4jConfigListener
-        </listener-class>
-    </listener>
 </web-app>

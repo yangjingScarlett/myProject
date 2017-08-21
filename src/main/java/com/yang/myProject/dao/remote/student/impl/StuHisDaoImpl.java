@@ -30,7 +30,7 @@ public class StuHisDaoImpl extends RemoteGenericDaoImpl implements StuHisDao {
         String sql = String.format(SQLQueryProcessor.getSql(SQLQueryEnum.QUERY_EARLIEST_ENTER_DATE));
         Object obj = executeSingleStatement(sql);
         java.sql.Date date = (java.sql.Date) obj;
-        Date utilDate=new Date(date.getTime());
+        Date utilDate = new Date(date.getTime());
         return obj != null ? utilDate : null;
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Yangjing
  */
-public class GenericQuery<T> implements Serializable{
+public class GenericQuery<T> implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(GenericQuery.class);
 
     /**
@@ -79,7 +79,7 @@ public class GenericQuery<T> implements Serializable{
      */
     public void between(String propertyName, String lo, String go) {
         if (lo != null && go != null) {
-            Expression expression=from.get(propertyName);
+            Expression expression = from.get(propertyName);
             this.predicates.add(criteriaBuilder.between(expression, lo, go));
         }
     }

@@ -26,7 +26,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @Component
 @Aspect
 public class RefreshAspect {
-    private static final Logger logger= LoggerFactory.getLogger(RefreshAspect.class);
+    private static final Logger logger = LoggerFactory.getLogger(RefreshAspect.class);
 
     @Autowired
     private RemoteStudentService remoteStudentService;

@@ -17,7 +17,7 @@ import java.util.TreeMap;
  * @author Yangjing
  */
 @Service
-@Transactional(transactionManager = "transactionManager",propagation = Propagation.SUPPORTS,readOnly = true)
+@Transactional(transactionManager = "transactionManager", propagation = Propagation.SUPPORTS, readOnly = true)
 public class RemoteStudentServiceImpl implements RemoteStudentService {
     @Autowired
     private StuRealTimeDao stuRealTimeDao;
@@ -26,28 +26,24 @@ public class RemoteStudentServiceImpl implements RemoteStudentService {
     private StuHisDao stuHisDao;
 
     @Override
-    public Date getEarliestEnterDate(){
+    public Date getEarliestEnterDate() {
         return stuHisDao.getEarliestEnterDate();
     }
 
     @Override
-    public TreeMap<String, Student> loadHistStatsData(String dateStr){
-        TreeMap<String,Student> stuTreeMap=new TreeMap<>();
-        stuHisDao.loadHistStuCnt(dateStr,stuTreeMap);
+    public TreeMap<String, Student> loadHistStatsData(String dateStr) {
+        TreeMap<String, Student> stuTreeMap = new TreeMap<>();
+        stuHisDao.loadHistStuCnt(dateStr, stuTreeMap);
         stuHisDao.loadHistStuNumDueDay(stuTreeMap);
         return stuTreeMap;
     }
 
     @Override
-    public Student loadStatsData(Date specificDate, Student prevStudent){
-        String specificDateStr= DateTimeUtil.toDateString(specificDate);
-        Student student=new Student(specificDateStr);
-        stuRealTimeDao.loadStuCount(specificDateStr,student);
-        stuRealTimeDao.loadStuCountDueDay(specificDateStr,student);
+    public Student loadStatsData(Date specificDate, Student prevStudent) {
+        String specificDateStr = DateTimeUtil.toDateString(specificDate);
+        Student student = new Student(specificDateStr);
+        stuRealTimeDao.loadStuCount(specificDateStr, student);
+        stuRealTimeDao.loadStuCountDueDay(specificDateStr, student);
         return student;
     }
-
-
-
-
 }

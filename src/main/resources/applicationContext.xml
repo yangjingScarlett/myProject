@@ -15,6 +15,12 @@
             http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+    <!--支持mvc注解的，就是使Controller中可以使用MVC的各种注解。-->
+    <mvc:annotation-driven/>
+
+    <!--声明自动为spring容器中那些配置@aspectJ切面的bean创建代理，织入切面-->
+    <aop:aspectj-autoproxy/>
+
     <!--配置spring会扫描的包，这个包里所有的bean都会被识别并建立-->
     <context:component-scan base-package="com.yang.myProject"/>
 
@@ -124,10 +130,6 @@
     <tx:annotation-driven transaction-manager="transactionManager" />
     <tx:annotation-driven transaction-manager="h2TransactionManager" />
 
-    <!--支持mvc注解的，就是使Controller中可以使用MVC的各种注解。-->
-    <mvc:annotation-driven/>
-
-    <!--声明自动为spring容器中那些配置@aspectJ切面的bean创建代理，织入切面-->
-    <aop:aspectj-autoproxy/>
+    <bean id="daoImpl" class="com.yang.myProject.testAop.DaoImpl"/>
 
 </beans>

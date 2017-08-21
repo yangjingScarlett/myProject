@@ -47,7 +47,7 @@ public class DateTimeUtil {
     }
 
     public static String toDateString(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(NORMAL_DATE_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(NORMAL_DATE_FORMAT1);
         return sdf.format(date);
     }
 

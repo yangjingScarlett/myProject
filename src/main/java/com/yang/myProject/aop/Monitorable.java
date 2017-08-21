@@ -6,6 +6,7 @@ import java.lang.annotation.*;
  * @author Yangjing
  *
  * 这是一个自定义的注解
+ * PointCut连接点注解类
  */
 //运行时 Annotation 指 @Retention 为 RUNTIME 的 Annotation
 @Retention(RetentionPolicy.RUNTIME)

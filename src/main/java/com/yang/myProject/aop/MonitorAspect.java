@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
  * @author Yangjing
  *
  * 这是编写的切面
+ * 切面类
  */
 @Component
 @Aspect

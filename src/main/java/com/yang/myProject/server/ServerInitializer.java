@@ -81,7 +81,7 @@ public class ServerInitializer {
             GlobalCache.getInstance().getStudentCache().setLatestStudent(studentTreeMap.lastEntry().getValue());
         } else {
             Student latestStudent = localStudentService.getLatestStudent();
-            List<Student> studentList = new LinkedList<>();
+            //List<Student> studentList = new LinkedList<>();
             Date nextDay = maxEnterDate;
             while (true) {
                 nextDay = DateTimeUtil.nextOneDay(nextDay);
@@ -91,9 +91,9 @@ public class ServerInitializer {
                 } else {
                     logger.info("Loading student historical statistics data on {}", DateTimeUtil.toDateString(nextDay));
                     latestStudent = remoteStudentService.loadStatsData(nextDay, latestStudent);
-                    studentList.add(latestStudent);
+                    //studentList.add(latestStudent);
                 }
-                localStudentService.saveStudent(studentList);
+                localStudentService.saveStudent(latestStudent);
                 GlobalCache.getInstance().getStudentCache().setLatestStudent(latestStudent);
             }
             logger.info("Server initialization completed in {} ms.", (System.nanoTime() - startInitTime) / 1000 / 1000);

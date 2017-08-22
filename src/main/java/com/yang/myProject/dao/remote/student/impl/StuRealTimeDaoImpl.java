@@ -25,10 +25,9 @@ public class StuRealTimeDaoImpl extends RemoteGenericDaoImpl implements StuRealT
     public void loadStuCount(String enterDate, Student student) {
         String sql = String.format(SQLQueryProcessor.getSql(SQLQueryEnum.QUERY_STUDENT_CNT), enterDate);
 
-        List<Object[]> results = getResultList(sql);
+        List results = getResultList(sql);
         if (!results.isEmpty()) {
-            Object[] res = results.get(0);
-            student.setStuCountPerDay(Long.valueOf(String.valueOf(res[0])));
+            student.setStuCountPerDay(Long.valueOf(String.valueOf(results.get(0))));
         }
     }
 

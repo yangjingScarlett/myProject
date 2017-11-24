@@ -4,10 +4,6 @@
 -- student表的所有信息
 select * from student;
 
--- //@SQL@{QUERY_COURSE_DETAIL}
--- course表的所有信息
-select * from course;
-
 -- //@SQL@{QUERY_BUSINESS_DATE}
 -- 查询入学日期
 SELECT BUSINESSDATE FROM SYSTEM_SETUP;

@@ -46,8 +46,7 @@ public class ServerInitializer {
         GlobalCache.getInstance().getStudentCache().setEarliestEnterDate(earliestEnterDate);
         String earliestEnterDateStr = DateTimeUtil.toDateString(earliestEnterDate);
         if (minLocalEnterDateStr != null && !minLocalEnterDateStr.equals(earliestEnterDateStr)) {
-            logger.error("The locally minimal EnterDate [" + minLocalEnterDateStr + "] inconsistent with database value ["
-                    + earliestEnterDateStr + "]");
+            logger.error("The locally minimal EnterDate [{}] inconsistent with database value [{}]", minLocalEnterDateStr, earliestEnterDateStr);
         }
 
         //获取本地Student缓存数据：最大EnterDate值
@@ -61,9 +60,10 @@ public class ServerInitializer {
         String upperEnterDateStr = DateTimeUtil.toDateString(bizDate);
         logger.info("System business date: {}", upperEnterDateStr);
         if (maxEnterDate != null && !maxEnterDate.before(bizDate)) {
-            logger.error("The last persistent EnterDate [" + maxLocalEnterDateStr + "] is not before the system business date ["
-                    + upperEnterDateStr + "]");
+            logger.error("The last persistent EnterDate [{}] is not before the system business date [{}]",maxLocalEnterDateStr,maxLocalEnterDateStr);
         }
+
+
 
         if (maxEnterDate == null) {
             //初始化所有数据

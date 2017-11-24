@@ -116,6 +116,13 @@
             <version>${c3p0.version}</version>
         </dependency>
 
+        <!--使用druid作为数据库连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.29</version>
+        </dependency>
+
         <!--另一种测试框架-->
         <dependency>
             <groupId>org.testng</groupId>

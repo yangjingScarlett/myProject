@@ -27,7 +27,7 @@
         <property name="location" value="classpath:db.properties"/>
     </bean>
 
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <!--<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="${jdbc.driver}"/>
         <property name="jdbcUrl" value="${jdbc.url}"/>
         <property name="user" value="${jdbc.username}"/>
@@ -38,6 +38,21 @@
         <property name="maxIdleTime" value="${jdbc.max.idle.time}"/>
         <property name="checkoutTimeout" value="${jdbc.checkout.timeout}"/>
         <property name="testConnectionOnCheckout" value="true"/>
+    </bean>-->
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="maxActive" value="${jdbc.max.pool.size}"/>
+        <property name="minIdle" value="${jdbc.min.pool.size}"/>
+        <!--空闲时间，超过这个时间数据连接还没被用的话就会被关掉-->
+        <property name="timeBetweenEvictionRunsMillis" value="${jdbc.idle.connection.test.period}"/>
+        <property name="maxWait" value="${jdbc.max.idle.time}"/>
+        <!--等待获取新连接的时间，超时则抛出异常-->
+        <property name="removeAbandonedTimeout" value="${jdbc.checkout.timeout}"/>
+        <property name="testOnBorrow" value="true"/>
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -75,8 +90,8 @@
         <property name="jdbcUrl" value="jdbc:h2:file:E:/data/sample;DB_CLOSE_DELAY=-1;MODE=Oracle"/>
         <property name="user" value="sa"/>
         <property name="password" value="199527"/>
-        <property name="maxPoolSize" value="30"/>
-        <property name="minPoolSize" value="2"/>
+        <property name="maxPoolSize" value="8"/>
+        <property name="minPoolSize" value="0"/>
         <property name="idleConnectionTestPeriod" value="1000"/>
         <property name="maxIdleTime" value="1800"/>
         <!--<property name="checkoutTimeout" value="10000"/>-->

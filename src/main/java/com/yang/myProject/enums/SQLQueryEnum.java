@@ -9,10 +9,6 @@ public enum SQLQueryEnum {
      */
     QUERY_STUDENT_DETAIL,
 
-    /**
-     * course表的所有信息
-     */
-    QUERY_COURSE_DETAIL,
 
     /**
      * 指定日期当天的入学人数
